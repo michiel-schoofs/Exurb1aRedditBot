@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using RedditBot.Data;
 using RedditBot.Models.Domain;
 using RedditBot.Services;
 using System.IO;
@@ -18,6 +20,8 @@ namespace RedditBot {
 
         public static IConfiguration ConfigureSecrets() {
             return new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddUserSecrets<Secrets>()
                 .Build();
         }
@@ -27,7 +31,9 @@ namespace RedditBot {
                 .AddSingleton(new Secrets(configuration.GetSection(nameof(Secrets))))
                 .AddSingleton<RedditService>()
                 .AddSingleton<Startup>()
-                .AddOptions()
+                .AddDbContext<ApplicationDBContext>(
+                    options => options.UseSqlite(configuration.GetConnectionString("dbcontext"))
+                ).AddOptions()
                 .BuildServiceProvider();
         }
     }
