@@ -3,7 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using RedditBot.Data;
+using RedditBot.Data.Repositories;
 using RedditBot.Models.Domain;
+using RedditBot.Models.Repositories;
 using RedditBot.Services;
 using System.IO;
 
@@ -12,7 +14,8 @@ namespace RedditBot {
         static void Main(string[] args) {
             IConfiguration config = ConfigureSecrets();
             ServiceProvider services = ConfigureDependecyInjection(config);
-            Startup startup = services.GetService<Startup>();
+
+            Startup startup = new Startup(services);
 
             startup.Configure();
             startup.Run().Wait();
@@ -28,12 +31,13 @@ namespace RedditBot {
 
         public static ServiceProvider ConfigureDependecyInjection(IConfiguration configuration) {
             return new ServiceCollection()
+                .AddDbContext<ApplicationDBContext>(options => options.UseSqlite(configuration.GetConnectionString("dbcontext")))
                 .AddSingleton(new Secrets(configuration.GetSection(nameof(Secrets))))
                 .AddSingleton<RedditService>()
-                .AddSingleton<Startup>()
-                .AddDbContext<ApplicationDBContext>(
-                    options => options.UseSqlite(configuration.GetConnectionString("dbcontext"))
-                ).AddOptions()
+                .AddSingleton<IChannelRepository, ChannelRepository>()
+                .AddSingleton<IMessageRepository,MessageRepository>()
+                .AddSingleton<IGuildRepository,GuildRepository>()
+                .AddOptions()
                 .BuildServiceProvider();
         }
     }

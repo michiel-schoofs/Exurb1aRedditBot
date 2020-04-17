@@ -8,7 +8,7 @@ namespace RedditBot.Models.Repositories {
         public IEnumerable<Channel> GetAllChannels();
         public IEnumerable<Channel> GetAllFromGuild(ulong guildId);
         public Channel GetChannelByID(ulong id);
-        public Channel GetChannelByType(ChannelType type);
+        public IEnumerable<Channel> GetChannelByType(ChannelType type);
         public Channel GetChannelByTypeInGuild(ulong guildId, ChannelType type);
         public bool Exists(ulong id);
     }

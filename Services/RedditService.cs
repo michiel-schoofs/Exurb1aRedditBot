@@ -21,7 +21,7 @@ namespace RedditBot.Services {
         private void Configure() {
             exurb1a.Posts.GetNew();
             exurb1a.Posts.NewUpdated += Posts_NewUpdated;
-            exurb1a.Posts.MonitorNew(breakOnFailure: true);
+            exurb1a.Posts.MonitorNew(breakOnFailure: true,monitoringDelayMs: 10000);
         }
 
         private void Posts_NewUpdated(object sender, PostsUpdateEventArgs e) {

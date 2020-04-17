@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace RedditBot.Models.Repositories {
     public interface IGuildRepository {
-        public IEnumerable<Guild> GetAllGuilds();
+        public IEnumerable<Guild> AllGuilds { get; }
+
         public Guild GetGuildById(ulong id);
         
         public void AddGuild(Guild guild);
