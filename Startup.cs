@@ -26,6 +26,7 @@ namespace RedditBot {
         //To-DO
         private PostsUpdateEventArgs _redditService_PostsUpdated(PostsUpdateEventArgs eve) {
             throw new NotImplementedException();
+            IGuild
         }
 
         private async Task _client_LoggedIn() {
