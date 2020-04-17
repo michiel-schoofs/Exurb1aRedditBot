@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using RedditBot.Models.Domain;
+using RedditBot.Services;
 using System.IO;
 
 namespace RedditBot {
@@ -9,9 +10,7 @@ namespace RedditBot {
         static void Main(string[] args) {
             IConfiguration config = ConfigureSecrets();
             ServiceProvider services = ConfigureDependecyInjection(config);
-
-            IOptions<Secrets> secrets = services.GetService<IOptions<Secrets>>();
-            Startup startup = new Startup(secrets.Value);
+            Startup startup = services.GetService<Startup>();
 
             startup.Configure();
             startup.Run().Wait();
@@ -25,7 +24,9 @@ namespace RedditBot {
 
         public static ServiceProvider ConfigureDependecyInjection(IConfiguration configuration) {
             return new ServiceCollection()
-                .Configure<Secrets>(configuration.GetSection(nameof(Secrets)))
+                .AddSingleton(new Secrets(configuration.GetSection(nameof(Secrets))))
+                .AddSingleton<RedditService>()
+                .AddSingleton<Startup>()
                 .AddOptions()
                 .BuildServiceProvider();
         }
