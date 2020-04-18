@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace RedditBot.Models.Repositories {
     public interface IMessageRepository {
-        public List<Message> GetAllMessages();
-        public Message GetMessage(ulong id);
-        public void RemoveMessage(ulong id);
-        public void AddMessage(Message msg);
-        public bool Exist(ulong id);
+        List<Message> GetAllMessages();
+        Message GetMessage(ulong id);
+        void RemoveMessage(ulong id);
+        void AddMessage(Message msg);
+        bool Exist(ulong id);
     }
 }

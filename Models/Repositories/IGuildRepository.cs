@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace RedditBot.Models.Repositories {
     public interface IGuildRepository {
-        public IEnumerable<Guild> AllGuilds { get; }
+        IEnumerable<Guild> AllGuilds { get; }
 
-        public Guild GetGuildById(ulong id);
+        Guild GetGuildById(ulong id);
         
-        public void AddGuild(Guild guild);
-        public void RemoveGuild(Guild guild);
+        void AddGuild(Guild guild);
+        void RemoveGuild(Guild guild);
 
-        public bool Exists(ulong id);
+        bool Exists(ulong id);
     }
 }

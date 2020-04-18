@@ -5,3 +5,4 @@
 /.vs/RedditBot
 /bin/Debug/netcoreapp3.0
 /obj
+/bin/Debug/netcoreapp2.2
