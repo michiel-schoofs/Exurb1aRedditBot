@@ -7,13 +7,15 @@ namespace RedditBot.Data {
         public DbSet<Guild> Guilds { get; set; }
         public DbSet<Channel> Channels { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Prefix> Prefixes { get; set; }
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.ApplyConfiguration(new GuildConfiguration())
                 .ApplyConfiguration(new ChannelConfiguration())
-                .ApplyConfiguration(new MessageConfiguration());
+                .ApplyConfiguration(new MessageConfiguration())
+                .ApplyConfiguration(new PrefixConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {

@@ -25,13 +25,13 @@ namespace RedditBot.Data.Repositories {
 
         public bool Exist(ulong id) => _messages.FirstOrDefault(m => m.MessageID == id) != null;
 
-        public IEnumerable<Message> GetAllMessages() => _messages.ToList();
+        public List<Message> GetAllMessages() => _messages.Include(m=>m.Channel).ThenInclude(c=>c.Guild).ToList();
 
         public Message GetMessage(ulong id) {
             if (!Exist(id))
                 throw new Exception("this message doesn't exist");
 
-            return _messages.FirstOrDefault(m => m.MessageID == id);
+            return _messages.Include(c=>c.Channel).ThenInclude(g=>g.Guild).FirstOrDefault(m => m.MessageID == id);
         }
 
         public void RemoveMessage(ulong id) {

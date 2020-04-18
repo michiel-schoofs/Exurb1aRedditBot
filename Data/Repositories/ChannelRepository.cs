@@ -38,7 +38,8 @@ namespace RedditBot.Data.Repositories {
 
         public Channel GetChannelByID(ulong id) => _channels.FirstOrDefault(c => c.ChanelID == id);
 
-        public IEnumerable<Channel> GetChannelByType(ChannelType type) => _channels.ToList().Where(c => c.Type == type);
+        public IEnumerable<Channel> GetChannelByType(ChannelType type) => _channels
+            .Include(c=>c.Guild).ToList().Where(c => c.Type == type);
 
         public Channel GetChannelByTypeInGuild(ulong guildId, ChannelType type) => _channels.FirstOrDefault(c => c.Type == type && c.GuildID == guildId);
 

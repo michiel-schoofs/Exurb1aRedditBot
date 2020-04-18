@@ -14,6 +14,7 @@ namespace RedditBot.Data.Configurations {
                 .WithMany()
                 .HasPrincipalKey(c => c.ChanelID)
                 .HasForeignKey(m => m.ChannelID)
+                .HasConstraintName("ChannelID")
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -14,7 +14,7 @@ namespace RedditBot.Services {
 
         public RedditService(Secrets secrets) {
             _client = new RedditClient(secrets.RedditAppID, secrets.RefreshToken, secrets.RedditAppSecret, secrets.AccessToken);
-            exurb1a = _client.Subreddit("Exurb1a").About();
+            exurb1a = _client.Subreddit("discordexurb1abot").About();
             Configure();
         }
 

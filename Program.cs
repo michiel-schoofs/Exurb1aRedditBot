@@ -37,6 +37,7 @@ namespace RedditBot {
                 .AddSingleton<IChannelRepository, ChannelRepository>()
                 .AddSingleton<IMessageRepository,MessageRepository>()
                 .AddSingleton<IGuildRepository,GuildRepository>()
+                .AddSingleton<IPrefixRepository,PrefixRepository>()
                 .AddOptions()
                 .BuildServiceProvider();
         }

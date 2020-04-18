@@ -1,11 +1,14 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using RedditBot.Custom_Preconditions;
 using RedditBot.Models.Domain;
 using RedditBot.Models.Repositories;
+using RedditBot.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using ChannelType = RedditBot.Models.Domain.ChannelType;
 
 namespace RedditBot.Commands {
     [RequireRole(700783756620988496)]
@@ -15,10 +18,12 @@ namespace RedditBot.Commands {
     public class ConfigureCommands : ModuleBase<SocketCommandContext> {
         private readonly IChannelRepository _channelRepo;
         private readonly IGuildRepository _guildRepo;
+        private readonly IPrefixRepository _prefixRepo;
 
-        public ConfigureCommands(IChannelRepository channelRepo, IGuildRepository guildRepo) {
+        public ConfigureCommands(IChannelRepository channelRepo, IGuildRepository guildRepo,IPrefixRepository prefixRepository) {
             _channelRepo = channelRepo;
             _guildRepo = guildRepo;
+            _prefixRepo = prefixRepository;
         }
 
         [Command("add channel")]
@@ -61,6 +66,24 @@ namespace RedditBot.Commands {
                 Guild gui = new Guild() { GuildID = guild.Id , Name = guild.Name };
                 _guildRepo.AddGuild(gui);
             }
+        }
+
+        [Command("prefix")]
+        public Task ChangePrefix() {
+            throw new Exception("You have to supply a prefix");
+        }
+        
+        [Command("prefix")]
+        public async Task ChangePrefix(string x) { 
+            if(x.Length > 1)
+                throw new Exception("You can only have one character as prefix");
+
+            char pref = Convert.ToChar(x);
+            
+            Guild guild = _guildRepo.GetGuildById(Context.Guild.Id);
+            _prefixRepo.ChangePrefix(guild.GuildID, pref);
+
+            await Context.Channel.SendMessageAsync($"prefix changed to {pref}");
         }
     }
 }
