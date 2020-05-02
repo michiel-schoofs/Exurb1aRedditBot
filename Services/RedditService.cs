@@ -2,6 +2,7 @@
 using Reddit.Controllers;
 using Reddit.Controllers.EventArgs;
 using RedditBot.Models.Domain;
+using System;
 using System.Collections.Generic;
 
 namespace RedditBot.Services {
@@ -21,11 +22,15 @@ namespace RedditBot.Services {
         private void Configure() {
             exurb1a.Posts.GetNew();
             exurb1a.Posts.NewUpdated += Posts_NewUpdated;
-            exurb1a.Posts.MonitorNew(breakOnFailure: true,monitoringDelayMs: 10000);
+            exurb1a.Posts.MonitorNew(breakOnFailure: false,monitoringDelayMs: 10000);
         }
 
         private void Posts_NewUpdated(object sender, PostsUpdateEventArgs e) {
-            PostsUpdated.Invoke(e);
+            try {
+                PostsUpdated.Invoke(e);
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public SubredditPosts GetAllPosts() {
